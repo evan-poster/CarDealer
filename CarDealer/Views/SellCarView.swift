@@ -33,14 +33,11 @@ struct SellCarView: View {
                         .padding(.bottom, themeTokens.spacing)
                     
                     // Form Fields with Custom Alignment
-                    FormField(label: "Make", text: $make, placeholder: "e.g., Toyota")
-                    FormField(label: "Model", text: $model, placeholder: "e.g., Camry")
-                    FormField(label: "Year", text: $year, placeholder: "e.g., 2023")
-                        .keyboardType(.numberPad)
-                    FormField(label: "Price", text: $price, placeholder: "e.g., 25000")
-                        .keyboardType(.decimalPad)
-                    FormField(label: "Image URL", text: $imageURL, placeholder: "https://example.com/image.jpg")
-                        .keyboardType(.URL)
+                    FormField(label: "Make", text: $make, placeholder: "e.g., Toyota", keyboardType: .default)
+                    FormField(label: "Model", text: $model, placeholder: "e.g., Camry", keyboardType: .default)
+                    FormField(label: "Year", text: $year, placeholder: "e.g., 2023", keyboardType: .numberPad)
+                    FormField(label: "Price", text: $price, placeholder: "e.g., 25000", keyboardType: .decimalPad)
+                    FormField(label: "Image URL", text: $imageURL, placeholder: "https://example.com/image.jpg", keyboardType: .URL)
                     
                     Spacer(minLength: themeTokens.spacing * 2)
                     
@@ -126,7 +123,15 @@ struct FormField: View {
     let label: String
     @Binding var text: String
     let placeholder: String
+    let keyboardType: UIKeyboardType
     @Environment(\.themeTokens) private var themeTokens
+    
+    init(label: String, text: Binding<String>, placeholder: String, keyboardType: UIKeyboardType = .default) {
+        self.label = label
+        self._text = text
+        self.placeholder = placeholder
+        self.keyboardType = keyboardType
+    }
     
     var body: some View {
         VStack(alignment: .formLabel, spacing: 8) {
@@ -140,17 +145,9 @@ struct FormField: View {
             
             TextField(placeholder, text: $text)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .keyboardType(keyboardType)
                 .alignmentGuide(.formLabel) { d in d[.leading] }
         }
-    }
-}
-
-extension View {
-    func keyboardType(_ type: UIKeyboardType) -> some View {
-        if let textField = self as? TextField<Text> {
-            return AnyView(textField.keyboardType(type))
-        }
-        return AnyView(self)
     }
 }
 

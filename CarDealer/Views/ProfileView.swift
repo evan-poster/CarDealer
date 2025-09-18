@@ -81,8 +81,8 @@ struct ProfileView: View {
                         }
                         
                         if isEditing {
-                            FormField(label: "Display Name", text: $displayName, placeholder: "Enter your display name")
-                            FormField(label: "Avatar URL", text: $avatarURL, placeholder: "https://example.com/avatar.jpg")
+                            FormField(label: "Display Name", text: $displayName, placeholder: "Enter your display name", keyboardType: .default)
+                            FormField(label: "Avatar URL", text: $avatarURL, placeholder: "https://example.com/avatar.jpg", keyboardType: .URL)
                         } else {
                             ProfileInfoRow(label: "Display Name", value: authManager.currentUser?.displayName ?? "Not set")
                             ProfileInfoRow(label: "Avatar URL", value: authManager.currentUser?.avatarURL.isEmpty == false ? "Set" : "Not set")

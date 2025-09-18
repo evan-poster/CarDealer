@@ -58,10 +58,13 @@ class CarService: ObservableObject {
     
     private func importCars(_ carJSONArray: [Car.CarJSON], modelContext: ModelContext) async {
         for carJSON in carJSONArray {
+            // Create a stable UUID from the JSON ID
+            let carUUID = UUID(uuidString: String(format: "%08X-0000-0000-0000-000000000000", carJSON.id)) ?? UUID()
+            
             // Check if car already exists
             let fetchDescriptor = FetchDescriptor<Car>(
                 predicate: #Predicate<Car> { car in
-                    car.id.uuidString.hasPrefix(String(format: "%08X", carJSON.id))
+                    car.id == carUUID
                 }
             )
             

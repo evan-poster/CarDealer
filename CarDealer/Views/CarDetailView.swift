@@ -139,11 +139,14 @@ struct CarDetailView: View {
     private func toggleLike() {
         guard let currentUser = authManager.currentUser else { return }
         
+        let carID = car.id
+        let userID = currentUser.id
+        
         if isLiked {
             // Remove like
             let fetchDescriptor = FetchDescriptor<Like>(
                 predicate: #Predicate<Like> { like in
-                    like.carID == car.id && like.userID == currentUser.id
+                    like.carID == carID && like.userID == userID
                 }
             )
             
@@ -159,7 +162,7 @@ struct CarDetailView: View {
             }
         } else {
             // Add like
-            let newLike = Like(carID: car.id, userID: currentUser.id)
+            let newLike = Like(carID: carID, userID: userID)
             modelContext.insert(newLike)
             
             do {
@@ -174,9 +177,12 @@ struct CarDetailView: View {
     private func checkIfLiked() {
         guard let currentUser = authManager.currentUser else { return }
         
+        let carID = car.id
+        let userID = currentUser.id
+        
         let fetchDescriptor = FetchDescriptor<Like>(
             predicate: #Predicate<Like> { like in
-                like.carID == car.id && like.userID == currentUser.id
+                like.carID == carID && like.userID == userID
             }
         )
         

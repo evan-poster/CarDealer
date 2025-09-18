@@ -123,7 +123,7 @@ struct CarDetailView: View {
             SpecificationRow(label: "Make", value: car.make)
             SpecificationRow(label: "Model", value: car.model)
             SpecificationRow(label: "Year", value: String(car.year))
-            SpecificationRow(label: "Price", value: "$\(car.price, specifier: "%.0f")")
+            SpecificationRow(label: "Price", value: "$\(car.price)")
             
             if car.isFromAPI {
                 SpecificationRow(label: "Source", value: "Dealer Inventory")

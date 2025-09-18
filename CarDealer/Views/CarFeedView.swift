@@ -79,54 +79,62 @@ struct CarRowView: View {
     
     var body: some View {
         HStack(spacing: themeTokens.spacing) {
-            // Car Image
-            AsyncImage(url: URL(string: car.imageURL)) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            } placeholder: {
-                RoundedRectangle(cornerRadius: themeTokens.cornerRadius)
-                    .fill(Color(.systemGray5))
-                    .overlay(
-                        Image(systemName: "car.fill")
-                            .foregroundColor(.secondary)
-                            .font(.title2)
-                    )
-            }
-            .frame(width: 80, height: 60)
-            .clipShape(RoundedRectangle(cornerRadius: themeTokens.cornerRadius))
-            
-            // Car Details
-            VStack(alignment: .leading, spacing: 4) {
-                Text("\(car.make) \(car.model)")
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                
-                Text("\(car.year)")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                
-                HStack {
-                    Text("$\(car.price, specifier: "%.0f")")
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.accentColor)
-                    
-                    Spacer()
-                    
-                    Button(action: toggleLike) {
-                        Image(systemName: isLiked ? "heart.fill" : "heart")
-                            .foregroundColor(isLiked ? .red : .secondary)
-                            .font(.title3)
-                    }
-                }
-            }
-            
+            carImageView
+            carDetailsView
             Spacer()
         }
         .cardStyle()
         .onAppear {
             checkIfLiked()
+        }
+    }
+    
+    private var carImageView: some View {
+        AsyncImage(url: URL(string: car.imageURL)) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+        } placeholder: {
+            RoundedRectangle(cornerRadius: themeTokens.cornerRadius)
+                .fill(Color(.systemGray5))
+                .overlay(
+                    Image(systemName: "car.fill")
+                        .foregroundColor(.secondary)
+                        .font(.title2)
+                )
+        }
+        .frame(width: 80, height: 60)
+        .clipShape(RoundedRectangle(cornerRadius: themeTokens.cornerRadius))
+    }
+    
+    private var carDetailsView: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("\(car.make) \(car.model)")
+                .font(.headline)
+                .foregroundColor(.primary)
+            
+            Text("\(car.year)")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            priceAndLikeSection
+        }
+    }
+    
+    private var priceAndLikeSection: some View {
+        HStack {
+            Text("$\(car.price, specifier: "%.0f")")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .foregroundColor(.accentColor)
+            
+            Spacer()
+            
+            Button(action: toggleLike) {
+                Image(systemName: isLiked ? "heart.fill" : "heart")
+                    .foregroundColor(isLiked ? .red : .secondary)
+                    .font(.title3)
+            }
         }
     }
     

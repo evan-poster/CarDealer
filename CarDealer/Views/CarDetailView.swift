@@ -21,98 +21,8 @@ struct CarDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: themeTokens.spacing) {
-                // Car Image with Price Badge
-                ZStack(alignment: .topTrailing) {
-                    AsyncImage(url: URL(string: car.imageURL)) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                    } placeholder: {
-                        Rectangle()
-                            .fill(Color(.systemGray5))
-                            .overlay(
-                                Image(systemName: "car.fill")
-                                    .foregroundColor(.secondary)
-                                    .font(.system(size: 40))
-                            )
-                    }
-                    .frame(height: 250)
-                    .clipShape(RoundedRectangle(cornerRadius: themeTokens.cornerRadius))
-                    
-                    // Price Badge
-                    Text("$\(car.price, specifier: "%.0f")")
-                        .font(.headline)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(
-                            PriceBadgeShape()
-                                .fill(Color.accentColor)
-                        )
-                        .offset(x: -themeTokens.spacing, y: themeTokens.spacing)
-                }
-                
-                // Car Information
-                VStack(alignment: .leading, spacing: themeTokens.spacing) {
-                    HStack {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text("\(car.make) \(car.model)")
-                                .font(.title)
-                                .fontWeight(.bold)
-                            
-                            Text("Year: \(car.year)")
-                                .font(.title3)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        Spacer()
-                        
-                        Button(action: toggleLike) {
-                            Image(systemName: isLiked ? "heart.fill" : "heart")
-                                .foregroundColor(isLiked ? .red : .secondary)
-                                .font(.title2)
-                        }
-                    }
-                    
-                    Divider()
-                    
-                    // Specifications
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Specifications")
-                            .font(.headline)
-                        
-                        SpecificationRow(label: "Make", value: car.make)
-                        SpecificationRow(label: "Model", value: car.model)
-                        SpecificationRow(label: "Year", value: String(car.year))
-                        SpecificationRow(label: "Price", value: "$\(car.price, specifier: "%.0f")")
-                        
-                        if car.isFromAPI {
-                            SpecificationRow(label: "Source", value: "Dealer Inventory")
-                        } else {
-                            SpecificationRow(label: "Source", value: "Private Seller")
-                        }
-                    }
-                    
-                    Spacer(minLength: themeTokens.spacing * 2)
-                    
-                    // Action Buttons
-                    VStack(spacing: themeTokens.spacing) {
-                        Button("Buy Now") {
-                            showBuyConfirmation = true
-                        }
-                        .buttonStyle(PillButtonStyle())
-                        .frame(maxWidth: .infinity)
-                        
-                        Button("Contact Seller") {
-                            // Placeholder for contact functionality
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                        .foregroundColor(.accentColor)
-                        .frame(maxWidth: .infinity)
-                    }
-                }
-                .cardStyle()
+                carImageSection
+                carInformationSection
             }
             .padding(themeTokens.spacing)
         }
@@ -133,6 +43,110 @@ struct CarDetailView: View {
             Button("OK") { }
         } message: {
             Text("You have successfully purchased the \(car.make) \(car.model) for $\(car.price, specifier: "%.0f")")
+        }
+    }
+    
+    private var carImageSection: some View {
+        ZStack(alignment: .topTrailing) {
+            AsyncImage(url: URL(string: car.imageURL)) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Rectangle()
+                    .fill(Color(.systemGray5))
+                    .overlay(
+                        Image(systemName: "car.fill")
+                            .foregroundColor(.secondary)
+                            .font(.system(size: 40))
+                    )
+            }
+            .frame(height: 250)
+            .clipShape(RoundedRectangle(cornerRadius: themeTokens.cornerRadius))
+            
+            priceBadge
+        }
+    }
+    
+    private var priceBadge: some View {
+        Text("$\(car.price, specifier: "%.0f")")
+            .font(.headline)
+            .fontWeight(.bold)
+            .foregroundColor(.white)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(
+                PriceBadgeShape()
+                    .fill(Color.accentColor)
+            )
+            .offset(x: -themeTokens.spacing, y: themeTokens.spacing)
+    }
+    
+    private var carInformationSection: some View {
+        VStack(alignment: .leading, spacing: themeTokens.spacing) {
+            carHeaderSection
+            Divider()
+            specificationsSection
+            Spacer(minLength: themeTokens.spacing * 2)
+            actionButtonsSection
+        }
+        .cardStyle()
+    }
+    
+    private var carHeaderSection: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("\(car.make) \(car.model)")
+                    .font(.title)
+                    .fontWeight(.bold)
+                
+                Text("Year: \(car.year)")
+                    .font(.title3)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            Button(action: toggleLike) {
+                Image(systemName: isLiked ? "heart.fill" : "heart")
+                    .foregroundColor(isLiked ? .red : .secondary)
+                    .font(.title2)
+            }
+        }
+    }
+    
+    private var specificationsSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Specifications")
+                .font(.headline)
+            
+            SpecificationRow(label: "Make", value: car.make)
+            SpecificationRow(label: "Model", value: car.model)
+            SpecificationRow(label: "Year", value: String(car.year))
+            SpecificationRow(label: "Price", value: "$\(car.price, specifier: "%.0f")")
+            
+            if car.isFromAPI {
+                SpecificationRow(label: "Source", value: "Dealer Inventory")
+            } else {
+                SpecificationRow(label: "Source", value: "Private Seller")
+            }
+        }
+    }
+    
+    private var actionButtonsSection: some View {
+        VStack(spacing: themeTokens.spacing) {
+            Button("Buy Now") {
+                showBuyConfirmation = true
+            }
+            .buttonStyle(PillButtonStyle())
+            .frame(maxWidth: .infinity)
+            
+            Button("Contact Seller") {
+                // Placeholder for contact functionality
+            }
+            .buttonStyle(PlainButtonStyle())
+            .foregroundColor(.accentColor)
+            .frame(maxWidth: .infinity)
         }
     }
     

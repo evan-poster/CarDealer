@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MainTabView: View {
+    @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var authManager: AuthenticationManager
     
     var body: some View {
@@ -31,6 +33,12 @@ struct MainTabView: View {
                 }
         }
         .accentColor(.blue)
+        .onAppear {
+            // Load current user immediately when MainTabView appears
+            if authManager.currentUser == nil {
+                authManager.loadCurrentUser(modelContext: modelContext)
+            }
+        }
     }
 }
 

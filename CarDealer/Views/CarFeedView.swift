@@ -87,6 +87,9 @@ struct CarRowView: View {
         .onAppear {
             checkIfLiked()
         }
+        .onChange(of: authManager.currentUser) { _, _ in
+            checkIfLiked()
+        }
     }
     
     private var carImageView: some View {

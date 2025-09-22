@@ -34,7 +34,7 @@ struct ProfileView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .formLabel, spacing: themeTokens.spacing) {
+                VStack(alignment: .leading, spacing: themeTokens.spacing) {
                     // Profile Header
                     VStack(spacing: themeTokens.spacing) {
                         // Avatar
@@ -58,14 +58,14 @@ struct ProfileView: View {
                             .font(.title2)
                             .fontWeight(.semibold)
                     }
+                    .frame(maxWidth: .infinity)
                     .cardStyle()
                     
                     // Profile Information
-                    VStack(alignment: .formLabel, spacing: themeTokens.spacing) {
+                    VStack(alignment: .leading, spacing: themeTokens.spacing) {
                         HStack {
                             Text("Profile Information")
                                 .font(.headline)
-                                .alignmentGuide(.formLabel) { d in d[.leading] }
                             
                             Spacer()
                             
@@ -169,21 +169,13 @@ struct ProfileInfoRow: View {
     let value: String
     
     var body: some View {
-        VStack(alignment: .formLabel, spacing: 4) {
-            HStack {
-                Text(label)
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .alignmentGuide(.formLabel) { d in d[.leading] }
-                Spacer()
-            }
+        VStack(alignment: .leading, spacing: 4) {
+            Text(label)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
             
-            HStack {
-                Text(value)
-                    .font(.body)
-                    .alignmentGuide(.formLabel) { d in d[.leading] }
-                Spacer()
-            }
+            Text(value)
+                .font(.body)
         }
     }
 }

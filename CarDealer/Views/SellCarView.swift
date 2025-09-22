@@ -25,7 +25,7 @@ struct SellCarView: View {
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .formLabel, spacing: themeTokens.spacing) {
+                VStack(alignment: .leading, spacing: themeTokens.spacing) {
                     Text("Create a new car listing")
                         .font(.title2)
                         .fontWeight(.semibold)
@@ -134,19 +134,14 @@ struct FormField: View {
     }
     
     var body: some View {
-        VStack(alignment: .formLabel, spacing: 8) {
-            HStack {
-                Text(label)
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                    .alignmentGuide(.formLabel) { d in d[.leading] }
-                Spacer()
-            }
+        VStack(alignment: .leading, spacing: 8) {
+            Text(label)
+                .font(.headline)
+                .foregroundColor(.primary)
             
             TextField(placeholder, text: $text)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .keyboardType(keyboardType)
-                .alignmentGuide(.formLabel) { d in d[.leading] }
         }
     }
 }

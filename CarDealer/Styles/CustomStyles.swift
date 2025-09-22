@@ -52,16 +52,6 @@ struct PillButtonStyle: ButtonStyle {
     }
 }
 
-// MARK: - Custom Alignment Guide
-extension HorizontalAlignment {
-    struct FormLabelAlignment: AlignmentID {
-        static func defaultValue(in context: ViewDimensions) -> CGFloat {
-            context[.leading]
-        }
-    }
-    
-    static let formLabel = HorizontalAlignment(FormLabelAlignment.self)
-}
 
 // MARK: - Custom Shapes
 struct PriceBadgeShape: Shape {
